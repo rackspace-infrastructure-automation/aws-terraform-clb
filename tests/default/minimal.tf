@@ -99,4 +99,13 @@ module "clb" {
   create_logging_bucket = false
   rackspace_managed     = false
   subnets               = "${module.vpc.public_subnets}"
+
+  listeners = [
+    {
+      instance_port     = 8000
+      instance_protocol = "HTTP"
+      lb_port           = 80
+      lb_protocol       = "HTTP"
+    },
+  ]
 }
