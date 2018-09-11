@@ -98,4 +98,5 @@ module "clb" {
 
   create_logging_bucket = false
   rackspace_managed     = false
+  subnets               = "${module.vpc.public_subnets}"
 }
