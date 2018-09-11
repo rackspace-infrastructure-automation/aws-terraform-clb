@@ -80,7 +80,7 @@ resource "aws_elb" "clb" {
 }
 
 resource "aws_autoscaling_attachment" "asg_attachment_bar" {
-  count                  = "${var.asg_target ? 1:0}"
+  count                  = "${var.asg_target != "" ? 1:0}"
   autoscaling_group_name = "${var.asg_target}"
   elb                    = "${aws_elb.clb.id}"
 }
