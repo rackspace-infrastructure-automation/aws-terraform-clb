@@ -24,7 +24,7 @@ module "clb" {
   # Rackspace Managed
   rackspace_managed = true
 
-  asg_target = "nate_asg"
+  asg_target = "asg_name"
 
   # One of 'none'|'load_balancer'|'application' and the appropriate block below
   stickiness_type = "none"
