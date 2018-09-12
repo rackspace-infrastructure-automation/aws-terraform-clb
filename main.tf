@@ -1,3 +1,37 @@
+/**
+ * # aws-terraform-clb
+ *
+ *This module creates a Classic Load Balancer also called ELB. Not to be confused with NLB or ALB which are preferred.
+ *
+ *## Basic Usage
+ *
+ *```
+ *module "clb" {
+ * source = "../../module"
+ *
+ *   clb_name        = "<name>"
+ *   security_groups = ["sg-01", "sg-02"]
+ *   instances       = ["i-01", "i-02"]
+ *   subnets         = ["subnet-01", "subnet-02"]
+ *
+ *   tags = [{
+ *     "Right" = "Said"
+ *   }]
+ *
+ *   listeners = [
+ *     {
+ *       instance_port     = 8000
+ *       instance_protocol = "HTTP"
+ *       lb_port           = 80
+ *       lb_protocol       = "HTTP"
+ *     },
+ *   ]
+ * }
+ *```
+ *
+ * Full working references are available at [examples](examples)
+ */
+
 data "aws_region" "current_region" {}
 
 data "aws_caller_identity" "current_identity" {}
@@ -54,7 +88,7 @@ locals {
 }
 
 resource "aws_elb" "clb" {
-  depends_on = ["aws_s3_bucket.log_bucket"]
+  depends_on = ["aws_s3_bucket_policy.log_bucket_policy"]
   name       = "${var.clb_name}"
 
   access_logs = ["${local.access_logs[local.access_logs_config]}"]
@@ -141,7 +175,6 @@ resource "aws_s3_bucket_policy" "log_bucket_policy" {
   "Version": "2012-10-17",
   "Statement": [
     {
-      "Sid": "Stmt1529427092463",
       "Action": [
         "s3:PutObject"
       ],
@@ -179,7 +212,7 @@ resource "aws_cloudwatch_metric_alarm" "unhealthy_host_count_alarm" {
 
   alarm_actions = ["${local.alarm_setting}"]
 
-  ok_actions = ["${local.ok_actions[local.ok_action_config]}"]
+  ok_actions = ["${local.ok_setting}"]
 }
 
 # create r53 record with alias

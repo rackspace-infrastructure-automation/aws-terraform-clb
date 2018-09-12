@@ -1,3 +1,35 @@
+# aws-terraform-clb
+
+This module creates a Classic Load Balancer also called ELB. Not to be confused with NLB or ALB which are preferred.
+
+## Basic Usage
+
+```
+module "clb" {
+source = "../../module"
+
+  clb_name        = "<name>"
+  security_groups = ["sg-01", "sg-02"]
+  instances       = ["i-01", "i-02"]
+  subnets         = ["subnet-01", "subnet-02"]
+
+  tags = [{
+    "Right" = "Said"
+  }]
+
+  listeners = [
+    {
+      instance_port     = 8000
+      instance_protocol = "HTTP"
+      lb_port           = 80
+      lb_protocol       = "HTTP"
+    },
+  ]
+}
+```
+
+Full working references are available at [examples](examples)
+
 
 ## Inputs
 
@@ -6,7 +38,7 @@
 | app_cookie_name | The application cookie whose lifetime the ELB's cookie should follow. Only used if stickiness is set to application. | string | `` | no |
 | app_cookie_stickiness_policy_name | Name for App Cookie Stickiness policy. Only alphanumeric characters and hyphens allowed. Only used if stickiness is set to application. | string | `` | no |
 | app_cookie_stickiness_port | The load balancer port to which the policy should be applied. This must be an active listener on the load balancer. Only used if stickiness is set to application. | string | `` | no |
-| asg_target | Name of ASG to associate with the ELB. Leave blank if attatched instances are not in an ASG. | string | `` | no |
+| asg_target | Name of ASG to associate with the ELB. Leave blank if you are using this in combination with the EC2_ASG module, passing the output of this module to the EC2_ASG module. Leave blank if attached instances are not in an ASG. | string | `` | no |
 | clb_name | This name must be unique within your set of load balancers for the region. | string | - | yes |
 | connection_draining | Boolean to enable connection draining. i.e. true | false | string | `false` | no |
 | connection_draining_timeout | Set the timeout value for elastic loadbalancer draining policy if desired. | string | `0` | no |

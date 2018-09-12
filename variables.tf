@@ -1,6 +1,6 @@
 # General
 variable "asg_target" {
-  description = "Name of ASG to associate with the ELB. Leave blank if attatched instances are not in an ASG."
+  description = "Name of ASG to associate with the ELB. Leave blank if you are using this in combination with the EC2_ASG module, passing the output of this module to the EC2_ASG module. Leave blank if attached instances are not in an ASG."
   type        = "string"
   default     = ""
 }
