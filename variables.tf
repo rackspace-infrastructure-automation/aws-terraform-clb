@@ -50,7 +50,7 @@ variable "connection_draining" {
 variable "connection_draining_timeout" {
   description = "Set the timeout value for elastic loadbalancer draining policy if desired."
   type        = "string"
-  default     = 0
+  default     = 300
 }
 
 variable "cookie_expiration_period" {
