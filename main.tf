@@ -105,6 +105,7 @@ resource "aws_elb" "clb" {
   }
 
   subnets                     = ["${var.subnets}"]
+  security_groups             = ["${var.security_groups}"]
   cross_zone_load_balancing   = "${var.cross_zone}"
   idle_timeout                = "${var.idle_timeout}"
   connection_draining         = "${var.connection_draining}"
