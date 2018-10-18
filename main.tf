@@ -12,6 +12,7 @@
  *   clb_name        = "<name>"
  *   security_groups = ["sg-01", "sg-02"]
  *   instances       = ["i-01", "i-02"]
+ *   instances_count = 2
  *   subnets         = ["subnet-01", "subnet-02"]
  *
  *   tags = [{
@@ -104,7 +105,6 @@ resource "aws_elb" "clb" {
   }
 
   subnets                     = ["${var.subnets}"]
-  instances                   = ["${var.instances}"]
   cross_zone_load_balancing   = "${var.cross_zone}"
   idle_timeout                = "${var.idle_timeout}"
   connection_draining         = "${var.connection_draining}"
@@ -117,6 +117,12 @@ resource "aws_autoscaling_attachment" "asg_attachment_bar" {
   count                  = "${var.asg_target != "" ? 1:0}"
   autoscaling_group_name = "${var.asg_target}"
   elb                    = "${aws_elb.clb.id}"
+}
+
+resource "aws_elb_attachment" "instance" {
+  count    = "${var.instances_count}"
+  elb      = "${aws_elb.clb.id}"
+  instance = "${var.instances[count.index]}"
 }
 
 resource "aws_lb_cookie_stickiness_policy" "clb_lb_policy" {

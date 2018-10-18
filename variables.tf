@@ -128,6 +128,13 @@ variable "health_check_unhealthy_threshold" {
 variable "instances" {
   description = "A list of EC2 instance IDs for the load balancer. Use when not assigned to auto scale group. i.e. ['i-0806906515f952316', 'i-0806906515f952316', 'i-0806906515f952316']"
   type        = "list"
+  default     = []
+}
+
+variable "instances_count" {
+  description = "Total number of individual instances to attach to this CLB. Must match actual count of the `instances` parameter."
+  type        = "string"
+  default     = 0
 }
 
 variable "create_internal_record" {

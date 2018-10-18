@@ -9,6 +9,7 @@ module "clb" {
   clb_name        = "<name>"
   security_groups = ["sg-01", "sg-02"]
   instances       = ["i-01", "i-02"]
+  instances_count = 2
   subnets         = ["subnet-01", "subnet-02"]
 
   # Optional
