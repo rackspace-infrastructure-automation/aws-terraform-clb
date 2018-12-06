@@ -224,14 +224,14 @@ resource "aws_cloudwatch_metric_alarm" "unhealthy_host_count_alarm" {
 
 # create r53 record with alias
 resource "aws_route53_record" "zone_record_alias" {
-  count   = "${var.create_internal_record ? 1:0}"
-  name    = "${var.internal_zone_name}"
+  count   = "${var.create_internal_record ? 1 : 0}"
+  name    = "${var.internal_record_name}"
   type    = "A"
   zone_id = "${var.internal_zone_id}"
 
   alias {
     evaluate_target_health = true
-    name                   = "${var.internal_zone_name}"
-    zone_id                = "${var.internal_zone_id}"
+    name                   = "${aws_elb.clb.dns_name}"
+    zone_id                = "${aws_elb.clb.zone_id}"
   }
 }
