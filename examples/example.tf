@@ -3,7 +3,7 @@ provider "aws" {
 }
 
 module "clb" {
-  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-clb//?ref=v0.0.1"
+  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-clb//?ref=v0.0.4"
 
   # Required
   clb_name        = "<name>"
