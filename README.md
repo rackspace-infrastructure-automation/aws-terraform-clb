@@ -6,7 +6,7 @@ This module creates a Classic Load Balancer also called ELB. Not to be confused 
 
 ```
 module "clb" {
-source = "../../module"
+source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-clb//?ref=v0.0.5"
 
   clb_name        = "<name>"
   security_groups = ["sg-01", "sg-02"]
@@ -46,8 +46,6 @@ Full working references are available at [examples](examples)
 | create\_internal\_record | Create Route53 Internal Record. i.e. true | false | string | `"false"` | no |
 | create\_logging\_bucket | Create a new S3 logging bucket. i.e. true | false | string | `"true"` | no |
 | cross\_zone | Whether cross-zone load balancing is enabled for the load balancer. i.e. true | false | string | `"true"` | no |
-| custom\_alarm\_sns\_topic | If not Rackspace managed, you can use a custom SNS topic to send alerts to. | string | `""` | no |
-| custom\_ok\_sns\_topic | If not Rackspace managed, you can use a custom SNS topic to send alerts to. | string | `""` | no |
 | environment | Application environment for which this network is being created from one of the following: 'Development', 'Integration', 'PreProduction', 'Production', 'QA', 'Staging', 'Test' | string | `"Development"` | no |
 | health\_check\_interval | Seconds between health checks. | string | `"30"` | no |
 | health\_check\_target | Protocol & port check on instance. Valid pattern is <PROTOCOL>:<PORT><PATH>, where PROTOCOL values areTCP:5000 | SSL:5000 || HTTP(S) = HTTP:80/path/to/my/file. | string | `"HTTP:80/"` | no |
@@ -72,7 +70,9 @@ Full working references are available at [examples](examples)
 | logging\_bucket\_name | The number of days to retain load balancer logs. Parameter is ignored if not creating a new S3 bucket. | string | `""` | no |
 | logging\_bucket\_prefix | The prefix for the location in the S3 bucket. If you don't specify a prefix, the access logs are stored in the root of the bucket. | string | `"FrontendCLBLogs"` | no |
 | logging\_bucket\_retention | The number of days to retain load balancer logs. Parameter is ignored if not creating a new S3 bucket. | string | `"14"` | no |
-| rackspace\_managed | Boolean for using Rackspace Managed Services. i.e. true | false | string | `"true"` | no |
+| notification\_topic | List of SNS Topic ARNs to use for customer notifications. | list | `<list>` | no |
+| rackspace\_alarms\_enabled | Specifies whether alarms will create a Rackspace ticket.  Ignored if rackspace_managed is set to false. | string | `"false"` | no |
+| rackspace\_managed | Boolean parameter controlling if instance will be fully managed by Rackspace support teams, created CloudWatch alarms that generate tickets, and utilize Rackspace managed SSM documents. | string | `"true"` | no |
 | security\_groups | A list of EC2 security groups to assign to this resource. | list | n/a | yes |
 | stickiness\_type | Disable stickiness by using `none` or use `load_balancer` for enabling Enable load balancer generated cookie stickiness or use `application` for enabling application generated cookie stickiness. i.e. none | load_balancer | application | string | `"none"` | no |
 | subnets | A list of subnet IDs to attach to the ELB. | list | n/a | yes |
