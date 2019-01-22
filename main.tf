@@ -7,7 +7,7 @@
  *
  *```
  *module "clb" {
- * source = "../../module"
+ * source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-clb//?ref=v0.0.5"
  *
  *   clb_name        = "<name>"
  *   security_groups = ["sg-01", "sg-02"]
@@ -52,27 +52,6 @@ locals {
   }
 
   merged_tags = "${merge(local.default_tags, var.tags)}"
-
-  sns_topic = "arn:aws:sns:${data.aws_region.current_region.name}:${data.aws_caller_identity.current_identity.account_id}:rackspace-support-emergency"
-
-  alarm_action_config = "${var.rackspace_managed ? "managed":"unmanaged"}"
-
-  alarm_actions = {
-    managed = ["${local.sns_topic}"]
-
-    unmanaged = ["${var.custom_alarm_sns_topic}"]
-  }
-
-  ok_action_config = "${var.rackspace_managed ? "managed":"unmanaged"}"
-
-  ok_actions = {
-    managed = ["${local.sns_topic}"]
-
-    unmanaged = ["${var.custom_ok_sns_topic}"]
-  }
-
-  alarm_setting = "${local.alarm_actions[local.alarm_action_config]}"
-  ok_setting    = "${local.ok_actions[local.ok_action_config]}"
 
   access_logs_config = "${var.logging_bucket_name != "" ? "enabled":"disabled"}"
 
@@ -199,27 +178,27 @@ POLICY
 }
 
 # enable cloudwatch/RS ticket creation
-resource "aws_cloudwatch_metric_alarm" "unhealthy_host_count_alarm" {
-  count = "${var.rackspace_managed ? 1:0}"
+module "unhealthy_host_count_alarm" {
+  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-cloudwatch_alarm//?ref=v0.0.1"
 
-  alarm_name          = "${format("%v_unhealthy_host_count_alarm", var.clb_name)}"
-  alarm_description   = "Unhealthy Host count is greater than or equal to threshold, creating ticket."
-  comparison_operator = "GreaterThanOrEqualToThreshold"
-  evaluation_periods  = 10
-  metric_name         = "UnHealthyHostCount"
-  namespace           = "AWS/ApplicationELB"
-  period              = 60
-  statistic           = "Maximum"
-  threshold           = 1
-  unit                = "Count"
+  alarm_description        = "Unhealthy Host count is greater than or equal to threshold, creating ticket."
+  alarm_name               = "${var.clb_name}_unhealthy_host_count_alarm"
+  comparison_operator      = "GreaterThanOrEqualToThreshold"
+  evaluation_periods       = 10
+  metric_name              = "UnHealthyHostCount"
+  namespace                = "AWS/ELB"
+  notification_topic       = "${var.notification_topic}"
+  period                   = 60
+  rackspace_alarms_enabled = "${var.rackspace_alarms_enabled}"
+  rackspace_managed        = "${var.rackspace_managed}"
+  severity                 = "emergency"
+  statistic                = "Maximum"
+  threshold                = 1
+  unit                     = "Count"
 
-  dimensions {
+  dimensions = [{
     LoadBalancer = "${aws_elb.clb.id}"
-  }
-
-  alarm_actions = ["${local.alarm_setting}"]
-
-  ok_actions = ["${local.ok_setting}"]
+  }]
 }
 
 # create r53 record with alias

@@ -71,22 +71,22 @@ variable "listeners" {
   default     = []
 }
 
+variable "notification_topic" {
+  description = "List of SNS Topic ARNs to use for customer notifications."
+  type        = "list"
+  default     = []
+}
+
 variable "rackspace_managed" {
-  description = "Boolean for using Rackspace Managed Services. i.e. true | false"
+  description = "Boolean parameter controlling if instance will be fully managed by Rackspace support teams, created CloudWatch alarms that generate tickets, and utilize Rackspace managed SSM documents."
   type        = "string"
   default     = true
 }
 
-variable "custom_alarm_sns_topic" {
-  description = "If not Rackspace managed, you can use a custom SNS topic to send alerts to."
+variable "rackspace_alarms_enabled" {
+  description = "Specifies whether alarms will create a Rackspace ticket.  Ignored if rackspace_managed is set to false."
   type        = "string"
-  default     = ""
-}
-
-variable "custom_ok_sns_topic" {
-  description = "If not Rackspace managed, you can use a custom SNS topic to send alerts to."
-  type        = "string"
-  default     = ""
+  default     = false
 }
 
 variable "environment" {
