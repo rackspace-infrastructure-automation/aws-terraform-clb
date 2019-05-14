@@ -197,7 +197,7 @@ module "unhealthy_host_count_alarm" {
   unit                     = "Count"
 
   dimensions = [{
-    LoadBalancer = "${aws_elb.clb.id}"
+    LoadBalancerName = "${aws_elb.clb.id}"
   }]
 }
 
