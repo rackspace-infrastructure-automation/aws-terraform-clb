@@ -87,7 +87,7 @@ resource "aws_instance" "test02" {
 }
 
 module "clb" {
-  source = "../../modules"
+  source = "../../module"
 
   clb_name              = "${random_string.rstring.result}-test"
   security_groups       = ["${aws_security_group.test_sg1.id}", "${aws_security_group.test_sg2.id}"]
