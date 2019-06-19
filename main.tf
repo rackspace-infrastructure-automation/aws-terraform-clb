@@ -7,7 +7,7 @@
  *
  *```
  *module "clb" {
- * source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-clb//?ref=v0.0.5"
+ * source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-clb//?ref=v0.0.7"
  *
  *   clb_name        = "<name>"
  *   security_groups = ["sg-01", "sg-02"]
