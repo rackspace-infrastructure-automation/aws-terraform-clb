@@ -71,6 +71,7 @@ resource "aws_elb" "clb" {
   depends_on = ["aws_s3_bucket_policy.log_bucket_policy"]
   name       = "${var.clb_name}"
 
+  internal    = "${var.internal_loadbalancer}"
   access_logs = ["${local.access_logs[local.access_logs_config]}"]
 
   listener = "${var.listeners}"

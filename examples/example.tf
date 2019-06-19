@@ -3,7 +3,7 @@ provider "aws" {
 }
 
 module "clb" {
-  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-clb//?ref=v0.0.5"
+  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-clb//?ref=v0.0.6"
 
   # Required
   clb_name        = "<name>"
@@ -16,6 +16,8 @@ module "clb" {
   tags = [{
     "Right" = "Said"
   }]
+
+  internal_loadbalancer = false
 
   # Logging Buckets
   create_logging_bucket     = false

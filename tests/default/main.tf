@@ -87,12 +87,13 @@ resource "aws_instance" "test02" {
 }
 
 module "clb" {
-  source = "../../module"
+  source = "../../modules"
 
-  clb_name        = "${random_string.rstring.result}-test"
-  security_groups = ["${aws_security_group.test_sg1.id}", "${aws_security_group.test_sg2.id}"]
-  instances       = ["${aws_instance.test01.id}", "${aws_instance.test02.id}"]
-  instances_count = 2
+  clb_name              = "${random_string.rstring.result}-test"
+  security_groups       = ["${aws_security_group.test_sg1.id}", "${aws_security_group.test_sg2.id}"]
+  instances             = ["${aws_instance.test01.id}", "${aws_instance.test02.id}"]
+  instances_count       = 2
+  internal_loadbalancer = false
 
   tags = [{
     "Right" = "Said"
