@@ -12,7 +12,7 @@ resource "random_string" "rstring" {
 resource "aws_security_group" "test_sg1" {
   name        = "${random_string.rstring.result}-test-sg-1"
   description = "Test SG Group 1"
-  vpc_id      = "${module.vpc.vpc_id}"
+  vpc_id      = module.vpc.vpc_id
 
   ingress {
     from_port   = 0
@@ -32,7 +32,7 @@ resource "aws_security_group" "test_sg1" {
 resource "aws_security_group" "test_sg2" {
   name        = "${random_string.rstring.result}-test-sg-2"
   description = "Test SG Group 2"
-  vpc_id      = "${module.vpc.vpc_id}"
+  vpc_id      = module.vpc.vpc_id
 
   ingress {
     from_port   = 0
@@ -75,33 +75,35 @@ data "aws_ami" "ubuntu" {
 }
 
 resource "aws_instance" "test01" {
-  ami           = "${data.aws_ami.ubuntu.id}"
+  ami           = data.aws_ami.ubuntu.id
   instance_type = "t2.micro"
-  subnet_id     = "${module.vpc.public_subnets[0]}"
+  subnet_id     = module.vpc.public_subnets[0]
 }
 
 resource "aws_instance" "test02" {
-  ami           = "${data.aws_ami.ubuntu.id}"
+  ami           = data.aws_ami.ubuntu.id
   instance_type = "t2.micro"
-  subnet_id     = "${module.vpc.public_subnets[1]}"
+  subnet_id     = module.vpc.public_subnets[1]
 }
 
 module "clb" {
   source = "../../module"
 
   clb_name              = "${random_string.rstring.result}-test"
-  security_groups       = ["${aws_security_group.test_sg1.id}", "${aws_security_group.test_sg2.id}"]
-  instances             = ["${aws_instance.test01.id}", "${aws_instance.test02.id}"]
+  security_groups       = [aws_security_group.test_sg1.id, aws_security_group.test_sg2.id]
+  instances             = [aws_instance.test01.id, aws_instance.test02.id]
   instances_count       = 2
   internal_loadbalancer = false
 
-  tags = [{
-    "Right" = "Said"
-  }]
+  tags = [
+    {
+      "Right" = "Said"
+    },
+  ]
 
   create_logging_bucket = false
   rackspace_managed     = false
-  subnets               = "${module.vpc.public_subnets}"
+  subnets               = module.vpc.public_subnets
 
   listeners = [
     {
@@ -112,3 +114,4 @@ module "clb" {
     },
   ]
 }
+

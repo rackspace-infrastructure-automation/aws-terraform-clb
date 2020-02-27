@@ -3,7 +3,7 @@ provider "aws" {
 }
 
 module "clb" {
-  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-clb//?ref=v0.0.7"
+  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-clb//?ref=v0.0.8"
 
   # Required
   clb_name        = "<name>"
@@ -13,9 +13,11 @@ module "clb" {
   subnets         = ["subnet-01", "subnet-02"]
 
   # Optional
-  tags = [{
-    "Right" = "Said"
-  }]
+  tags = [
+    {
+      "Right" = "Said"
+    },
+  ]
 
   internal_loadbalancer = false
 
@@ -54,3 +56,4 @@ module "clb" {
   connection_draining         = true
   connection_draining_timeout = 30
 }
+
