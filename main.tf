@@ -1,13 +1,13 @@
 /**
  * # aws-terraform-clb
  *
- *This module creates a Classic Load Balancer also called ELB. Not to be confused with NLB or ALB which are preferred.
+ * This module creates a Classic Load Balancer also called ELB. Not to be confused with NLB or ALB which are preferred.
  *
- *## Basic Usage
+ * ## Basic Usage
  *
- *```
- *module "clb" {
- * source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-clb//?ref=v0.0.7"
+ * ```
+ * module "clb" {
+ *   source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-clb//?ref=v0.0.7"
  *
  *   clb_name        = "<name>"
  *   security_groups = ["sg-01", "sg-02"]
@@ -28,12 +28,12 @@
  *     },
  *   ]
  * }
- *```
+ * ```
  *
  * Full working references are available at [examples](examples)
  * ## Other TF Modules Used
  * Using [aws-terraform-cloudwatch_alarm](https://github.com/rackspace-infrastructure-automation/aws-terraform-cloudwatch_alarm) to create the following CloudWatch Alarms:
- *	- unhealthy_host_count_alarm
+ *  - unhealthy_host_count_alarm
  */
 
 data "aws_region" "current_region" {}
@@ -136,8 +136,8 @@ resource "aws_s3_bucket" "log_bucket" {
   tags = "${local.merged_tags}"
 
   server_side_encryption_configuration {
-    "rule" {
-      "apply_server_side_encryption_by_default" {
+    rule {
+      apply_server_side_encryption_by_default {
         kms_master_key_id = "${var.logging_bucket_encryption_kms_mster_key}"
         sse_algorithm     = "${var.logging_bucket_encryption}"
       }
