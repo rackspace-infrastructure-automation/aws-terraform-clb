@@ -3,14 +3,14 @@ output "clb_arn" {
   value       = aws_elb.clb.arn
 }
 
-output "clb_name" {
-  description = "The name of the ELB."
-  value       = aws_elb.clb.name
-}
-
 output "clb_dns_name" {
   description = "The DNS name of the ELB."
   value       = aws_elb.clb.dns_name
+}
+
+output "clb_name" {
+  description = "The name of the ELB."
+  value       = aws_elb.clb.name
 }
 
 output "clb_instances" {
