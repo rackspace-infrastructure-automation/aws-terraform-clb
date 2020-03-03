@@ -3,63 +3,64 @@ terraform {
 }
 
 provider "aws" {
-  version = "~> 2.2"
   region  = "us-west-2"
+  version = "~> 2.2"
 }
 
 resource "random_string" "rstring" {
   length  = 18
-  upper   = false
   special = false
+  upper   = false
 }
 
 resource "aws_security_group" "test_sg1" {
-  name        = "${random_string.rstring.result}-test-sg-1"
   description = "Test SG Group 1"
+  name        = "${random_string.rstring.result}-test-sg-1"
   vpc_id      = module.vpc.vpc_id
 
   ingress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
+    from_port   = 0
+    protocol    = "-1"
+    to_port     = 0
   }
 
   egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
+    from_port   = 0
+    protocol    = "-1"
+    to_port     = 0
   }
 }
 
 resource "aws_security_group" "test_sg2" {
-  name        = "${random_string.rstring.result}-test-sg-2"
   description = "Test SG Group 2"
+  name        = "${random_string.rstring.result}-test-sg-2"
   vpc_id      = module.vpc.vpc_id
 
   ingress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
+    from_port   = 0
+    protocol    = "-1"
+    to_port     = 0
   }
 
   egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
+    from_port   = 0
+    protocol    = "-1"
+    to_port     = 0
   }
 }
 
 module "vpc" {
-  source              = "git@github.com:rackspace-infrastructure-automation/aws-terraform-vpc_basenetwork//?ref=v0.12.0"
+  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-vpc_basenetwork//?ref=v0.12.0"
+
   az_count            = 2
   cidr_range          = "10.0.0.0/16"
-  public_cidr_ranges  = ["10.0.1.0/24", "10.0.3.0/24"]
-  private_cidr_ranges = ["10.0.2.0/24", "10.0.4.0/24"]
   name                = "${random_string.rstring.result}-test"
+  private_cidr_ranges = ["10.0.2.0/24", "10.0.4.0/24"]
+  public_cidr_ranges  = ["10.0.1.0/24", "10.0.3.0/24"]
 }
 
 data "aws_ami" "ubuntu" {
@@ -93,14 +94,14 @@ resource "aws_instance" "test02" {
 module "clb" {
   source = "../../module"
 
-  clb_name              = "${random_string.rstring.result}-test"
-  security_groups       = [aws_security_group.test_sg1.id, aws_security_group.test_sg2.id]
+  name                  = "${random_string.rstring.result}-test"
   instances             = [aws_instance.test01.id, aws_instance.test02.id]
   instances_count       = 2
   internal_loadbalancer = false
+  security_groups       = [aws_security_group.test_sg1.id, aws_security_group.test_sg2.id]
 
-  tags =  {
-      Right = "Said"
+  tags = {
+    Right = "Said"
   }
 
   create_logging_bucket = false

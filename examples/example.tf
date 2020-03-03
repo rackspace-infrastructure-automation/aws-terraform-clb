@@ -11,25 +11,25 @@ module "clb" {
   source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-clb//?ref=v0.12.0"
 
   # Required
-  clb_name        = "<name>"
-  security_groups = ["sg-01", "sg-02"]
   instances       = ["i-01", "i-02"]
   instances_count = 2
+  name            = "<name>"
+  security_groups = ["sg-01", "sg-02"]
   subnets         = ["subnet-01", "subnet-02"]
 
   # Optional
   tags = {
-      Right = "Said"
+    Right = "Said"
   }
 
   internal_loadbalancer = false
 
   # Logging Buckets
-  create_logging_bucket     = false
+  create_logging_bucket = false
   # Required permissions for S3 logging bucket
   # https://docs.aws.amazon.com/elasticloadbalancing/latest/classic/enable-access-logs.html#attach-bucket-policy
-  logging_bucket_name       = "<existing_bucket_name>"
   logging_bucket_encryption = "AES256"
+  logging_bucket_name       = "<existing_bucket_name>"
 
   # Rackspace Managed
   rackspace_managed = true
@@ -45,9 +45,9 @@ module "clb" {
   app_cookie_stickiness_policy_name = "test-cookie-policy"
 
   # Load Balancer Stickiness
-  lb_cookie_stickiness_port       = 80
-  lb_cookie_stickines_policy_name = "test-cookie-policy"
-  cookie_expiration_period        = 600
+  cookie_expiration_period         = 600
+  lb_cookie_stickiness_port        = 80
+  lb_cookie_stickiness_policy_name = "test-cookie-policy"
 
   listeners = [
     {

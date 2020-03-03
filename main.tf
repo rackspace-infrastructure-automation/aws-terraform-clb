@@ -46,8 +46,8 @@ data "aws_elb_service_account" "main" {
 }
 
 locals {
-  env_list = ["Development", "Integration", "PreProduction", "Production", "QA", "Staging", "Test"]
   acl_list = ["authenticated-read", "aws-exec-read", "bucket-owner-read", "bucket-owner-full-control", "log-delivery-write", "private", "public-read", "public-read-write"]
+  env_list = ["Development", "Integration", "PreProduction", "Production", "QA", "Staging", "Test"]
 
   bucket_acl  = contains(local.acl_list, var.logging_bucket_access_control) ? var.logging_bucket_access_control : "bucket-owner-full-control"
   environment = contains(local.env_list, var.environment) ? var.environment : "Development"
@@ -75,18 +75,12 @@ locals {
 }
 
 resource "aws_elb" "clb" {
-  depends_on = [aws_s3_bucket_policy.log_bucket_policy]
-  name       = var.clb_name
+  name = var.name
 
   internal = var.internal_loadbalancer
   dynamic "access_logs" {
     for_each = local.access_logs[local.access_logs_config]
     content {
-      # TF-UPGRADE-TODO: The automatic upgrade tool can't predict
-      # which keys might be set in maps assigned here, so it has
-      # produced a comprehensive set here. Consider simplifying
-      # this after confirming which keys can be set in practice.
-
       bucket        = access_logs.value.bucket
       bucket_prefix = lookup(access_logs.value, "bucket_prefix", null)
       enabled       = lookup(access_logs.value, "enabled", null)
@@ -112,55 +106,62 @@ resource "aws_elb" "clb" {
 
   health_check {
     healthy_threshold   = var.health_check_threshold
-    unhealthy_threshold = var.health_check_unhealthy_threshold
-    timeout             = var.health_check_timeout
-    target              = var.health_check_target
     interval            = var.health_check_interval
+    target              = var.health_check_target
+    timeout             = var.health_check_timeout
+    unhealthy_threshold = var.health_check_unhealthy_threshold
   }
 
-  subnets                     = var.subnets
-  security_groups             = var.security_groups
-  cross_zone_load_balancing   = var.cross_zone
-  idle_timeout                = var.idle_timeout
   connection_draining         = var.connection_draining
   connection_draining_timeout = var.connection_draining_timeout
+  cross_zone_load_balancing   = var.cross_zone
+  idle_timeout                = var.idle_timeout
+  security_groups             = var.security_groups
+  subnets                     = var.subnets
 
   tags = local.merged_tags
+
+  depends_on = [aws_s3_bucket_policy.log_bucket_policy]
 }
 
 resource "aws_autoscaling_attachment" "asg_attachment_bar" {
-  count                  = var.asg_target != "" ? 1 : 0
+  count = var.asg_target != "" ? 1 : 0
+
   autoscaling_group_name = var.asg_target
   elb                    = aws_elb.clb.id
 }
 
 resource "aws_elb_attachment" "instance" {
-  count    = var.instances_count
+  count = var.instances_count
+
   elb      = aws_elb.clb.id
   instance = var.instances[count.index]
 }
 
 resource "aws_lb_cookie_stickiness_policy" "clb_lb_policy" {
-  count                    = var.stickiness_type == "load_balancer" ? 1 : 0
-  name                     = var.lb_cookie_stickines_policy_name
-  load_balancer            = aws_elb.clb.id
-  lb_port                  = var.lb_cookie_stickiness_port
+  count = var.stickiness_type == "load_balancer" ? 1 : 0
+
   cookie_expiration_period = var.cookie_expiration_period
+  lb_port                  = var.lb_cookie_stickiness_port
+  load_balancer            = aws_elb.clb.id
+  name                     = var.lb_cookie_stickiness_policy_name
 }
 
 resource "aws_app_cookie_stickiness_policy" "clb_app_policy" {
-  count         = var.stickiness_type == "application" ? 1 : 0
-  name          = var.app_cookie_stickiness_policy_name
-  load_balancer = aws_elb.clb.name
-  lb_port       = var.app_cookie_stickiness_port
+  count = var.stickiness_type == "application" ? 1 : 0
+
   cookie_name   = var.app_cookie_name
+  lb_port       = var.app_cookie_stickiness_port
+  load_balancer = aws_elb.clb.name
+  name          = var.app_cookie_stickiness_policy_name
 }
 
 # create s3 bucket if needed
 resource "aws_s3_bucket" "log_bucket" {
-  count  = var.create_logging_bucket ? 1 : 0
-  bucket = var.logging_bucket_name
+  count = var.create_logging_bucket ? 1 : 0
+
   acl    = local.bucket_acl
+  bucket = var.logging_bucket_name
 
   force_destroy = var.logging_bucket_force_destroy
 
@@ -187,7 +188,8 @@ resource "aws_s3_bucket" "log_bucket" {
 
 # s3 policy needs to be separate since you can't reference the bucket for the reference.
 resource "aws_s3_bucket_policy" "log_bucket_policy" {
-  count  = var.create_logging_bucket ? 1 : 0
+  count = var.create_logging_bucket ? 1 : 0
+
   bucket = aws_s3_bucket.log_bucket[0].id
 
   policy = <<POLICY
@@ -218,10 +220,10 @@ module "unhealthy_host_count_alarm" {
   source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-cloudwatch_alarm//?ref=v0.12.1"
 
   alarm_description        = "Unhealthy Host count is greater than or equal to threshold, creating ticket."
-  name                     = "${var.clb_name}_unhealthy_host_count_alarm"
   comparison_operator      = "GreaterThanOrEqualToThreshold"
   evaluation_periods       = 10
   metric_name              = "UnHealthyHostCount"
+  name                     = "${var.name}_unhealthy_host_count_alarm"
   namespace                = "AWS/ELB"
   notification_topic       = var.notification_topic
   period                   = 60
@@ -241,7 +243,8 @@ module "unhealthy_host_count_alarm" {
 
 # create r53 record with alias
 resource "aws_route53_record" "zone_record_alias" {
-  count   = var.create_internal_record ? 1 : 0
+  count = var.create_internal_record ? 1 : 0
+
   name    = var.internal_record_name
   type    = "A"
   zone_id = var.internal_zone_id

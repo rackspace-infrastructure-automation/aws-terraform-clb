@@ -8,7 +8,7 @@ output "clb_dns_name" {
   value       = aws_elb.clb.dns_name
 }
 
-output "clb_name" {
+output "name" {
   description = "The name of the ELB."
   value       = aws_elb.clb.name
 }
