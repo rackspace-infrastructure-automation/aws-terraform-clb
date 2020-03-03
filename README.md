@@ -38,7 +38,7 @@ Using [aws-terraform-cloudwatch\_alarm](https://github.com/rackspace-infrastruct
 
 | Name | Version |
 |------|---------|
-| aws | n/a |
+| aws | >= 2.1.0 |
 
 ## Inputs
 
@@ -72,8 +72,8 @@ Using [aws-terraform-cloudwatch\_alarm](https://github.com/rackspace-infrastruct
 | listeners | List of Maps describing the LB options including instance\_port (The port on the instance to route to), instance\_protocol (The protocol to use to the instance: HTTP, HTTPS, TCP, SSL), lb\_port (The port to listen on for the load balancer), lb\_protocol (The protocol to listen on. Valid values are HTTP, HTTPS, TCP, or SSL), ssl\_certificate\_id (The ARN of an SSL certificate you have uploaded to AWS IAM. Only valid when lb\_protocol is either HTTPS or SSL) | `list(map(string))` | `[]` | no |
 | logging\_bucket\_access\_control | Define ACL for Bucket from one of the [canned ACL](https://docs.aws.amazon.com/AmazonS3/latest/dev/acl-overview.html#canned-acl): private, public-read, public-read-write, aws-exec-read, authenticated-read, bucket-owner-read, bucket-owner-full-control, log-delivery-write | `string` | `"bucket-owner-full-control"` | no |
 | logging\_bucket\_encryption | Enable default bucket encryption. i.e. disabled \| AES256 \| aws:kms | `string` | `"AES256"` | no |
-| logging\_bucket\_encryption\_kms\_mster\_key | The AWS KMS master key ID used for the SSE-KMS encryption. This can only be used when you set the value of sse\_algorithm as aws:kms. | `string` | `""` | no |
 | logging\_bucket\_force\_destroy | Whether all objects should be deleted from the bucket so that the bucket can be destroyed without error. These objects are not recoverable. ie. true | `bool` | `false` | no |
+| logging\_bucket\_kms\_key\_id | The AWS KMS master key ID used for the SSE-KMS encryption. This can only be used when you set the value of sse\_algorithm as aws:kms. | `string` | `""` | no |
 | logging\_bucket\_log\_interval | The publishing interval in minutes. | `number` | `60` | no |
 | logging\_bucket\_name | The number of days to retain load balancer logs. Parameter is ignored if not creating a new S3 bucket. | `string` | `""` | no |
 | logging\_bucket\_prefix | The prefix for the location in the S3 bucket. If you don't specify a prefix, the access logs are stored in the root of the bucket. | `string` | `"FrontendCLBLogs"` | no |

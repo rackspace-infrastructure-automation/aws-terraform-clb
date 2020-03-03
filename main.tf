@@ -36,6 +36,14 @@
  *  - unhealthy_host_count_alarm
  */
 
+terraform {
+  required_version = ">= 0.12"
+
+  required_providers {
+    aws = ">= 2.1.0"
+  }
+}
+
 data "aws_region" "current_region" {
 }
 
@@ -91,11 +99,6 @@ resource "aws_elb" "clb" {
   dynamic "listener" {
     for_each = var.listeners
     content {
-      # TF-UPGRADE-TODO: The automatic upgrade tool can't predict
-      # which keys might be set in maps assigned here, so it has
-      # produced a comprehensive set here. Consider simplifying
-      # this after confirming which keys can be set in practice.
-
       instance_port      = listener.value.instance_port
       instance_protocol  = listener.value.instance_protocol
       lb_port            = listener.value.lb_port
@@ -170,7 +173,7 @@ resource "aws_s3_bucket" "log_bucket" {
   server_side_encryption_configuration {
     rule {
       apply_server_side_encryption_by_default {
-        kms_master_key_id = var.logging_bucket_encryption_kms_mster_key
+        kms_master_key_id = var.logging_bucket_kms_key_id
         sse_algorithm     = var.logging_bucket_encryption
       }
     }

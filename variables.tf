@@ -166,7 +166,7 @@ variable "logging_bucket_encryption" {
   default     = "AES256"
 }
 
-variable "logging_bucket_encryption_kms_mster_key" {
+variable "logging_bucket_kms_key_id" {
   description = "The AWS KMS master key ID used for the SSE-KMS encryption. This can only be used when you set the value of sse_algorithm as aws:kms."
   type        = string
   default     = ""
