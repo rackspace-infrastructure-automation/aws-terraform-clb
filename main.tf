@@ -7,17 +7,17 @@
  *
  * ```
  * module "clb" {
- *   source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-clb//?ref=v0.0.7"
+ *   source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-clb//?ref=v0.12.0"
  *
- *   clb_name        = "<name>"
- *   security_groups = ["sg-01", "sg-02"]
+ *   name            = "<name>"
  *   instances       = ["i-01", "i-02"]
  *   instances_count = 2
+ *   security_groups = ["sg-01", "sg-02"]
  *   subnets         = ["subnet-01", "subnet-02"]
  *
- *   tags = [{
- *     "Right" = "Said"
- *   }]
+ *   tags = {
+ *     Right = "Said"
+ *   }
  *
  *   listeners = [
  *     {
