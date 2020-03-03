@@ -1,3 +1,7 @@
+terraform {
+  required_version = ">= 0.12"
+}
+
 provider "aws" {
   version = "~> 2.2"
   region  = "us-west-2"
@@ -50,12 +54,12 @@ resource "aws_security_group" "test_sg2" {
 }
 
 module "vpc" {
-  source              = "git@github.com:rackspace-infrastructure-automation/aws-terraform-vpc_basenetwork//?ref=v0.0.2"
+  source              = "git@github.com:rackspace-infrastructure-automation/aws-terraform-vpc_basenetwork//?ref=v0.12.0"
   az_count            = 2
   cidr_range          = "10.0.0.0/16"
   public_cidr_ranges  = ["10.0.1.0/24", "10.0.3.0/24"]
   private_cidr_ranges = ["10.0.2.0/24", "10.0.4.0/24"]
-  vpc_name            = "${random_string.rstring.result}-test"
+  name                = "${random_string.rstring.result}-test"
 }
 
 data "aws_ami" "ubuntu" {
@@ -95,11 +99,9 @@ module "clb" {
   instances_count       = 2
   internal_loadbalancer = false
 
-  tags = [
-    {
-      "Right" = "Said"
-    },
-  ]
+  tags =  {
+      Right = "Said"
+  }
 
   create_logging_bucket = false
   rackspace_managed     = false

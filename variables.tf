@@ -67,7 +67,7 @@ variable "cross_zone" {
 
 variable "listeners" {
   description = "List of Maps describing the LB options including instance_port (The port on the instance to route to), instance_protocol (The protocol to use to the instance: HTTP, HTTPS, TCP, SSL), lb_port (The port to listen on for the load balancer), lb_protocol (The protocol to listen on. Valid values are HTTP, HTTPS, TCP, or SSL), ssl_certificate_id (The ARN of an SSL certificate you have uploaded to AWS IAM. Only valid when lb_protocol is either HTTPS or SSL)"
-  type        = list(string)
+  type        = list(map(string))
   default     = []
 }
 

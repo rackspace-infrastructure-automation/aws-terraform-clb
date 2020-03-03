@@ -80,7 +80,7 @@ resource "aws_elb" "clb" {
 
   internal = var.internal_loadbalancer
   dynamic "access_logs" {
-    for_each = [local.access_logs[local.access_logs_config]]
+    for_each = local.access_logs[local.access_logs_config]
     content {
       # TF-UPGRADE-TODO: The automatic upgrade tool can't predict
       # which keys might be set in maps assigned here, so it has
@@ -215,10 +215,10 @@ POLICY
 
 # enable cloudwatch/RS ticket creation
 module "unhealthy_host_count_alarm" {
-  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-cloudwatch_alarm//?ref=v0.0.1"
+  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-cloudwatch_alarm//?ref=v0.12.1"
 
   alarm_description        = "Unhealthy Host count is greater than or equal to threshold, creating ticket."
-  alarm_name               = "${var.clb_name}_unhealthy_host_count_alarm"
+  name                     = "${var.clb_name}_unhealthy_host_count_alarm"
   comparison_operator      = "GreaterThanOrEqualToThreshold"
   evaluation_periods       = 10
   metric_name              = "UnHealthyHostCount"

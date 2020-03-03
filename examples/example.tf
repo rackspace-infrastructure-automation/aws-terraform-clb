@@ -1,9 +1,14 @@
+terraform {
+  required_version = ">= 0.12"
+}
+
 provider "aws" {
-  region = "us-west-2"
+  region  = "us-west-2"
+  version = "~> 2.1"
 }
 
 module "clb" {
-  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-clb//?ref=v0.0.8"
+  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-clb//?ref=v0.12.0"
 
   # Required
   clb_name        = "<name>"
@@ -13,16 +18,16 @@ module "clb" {
   subnets         = ["subnet-01", "subnet-02"]
 
   # Optional
-  tags = [
-    {
-      "Right" = "Said"
-    },
-  ]
+  tags = {
+      Right = "Said"
+  }
 
   internal_loadbalancer = false
 
   # Logging Buckets
   create_logging_bucket     = false
+  # Required permissions for S3 logging bucket
+  # https://docs.aws.amazon.com/elasticloadbalancing/latest/classic/enable-access-logs.html#attach-bucket-policy
   logging_bucket_name       = "<existing_bucket_name>"
   logging_bucket_encryption = "AES256"
 
