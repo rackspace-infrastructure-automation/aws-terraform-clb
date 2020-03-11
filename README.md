@@ -38,7 +38,7 @@ Using [aws-terraform-cloudwatch\_alarm](https://github.com/rackspace-infrastruct
 
 | Name | Version |
 |------|---------|
-| aws | >= 2.1.0 |
+| aws | >= 2.7.0 |
 
 ## Inputs
 
@@ -62,7 +62,7 @@ Using [aws-terraform-cloudwatch\_alarm](https://github.com/rackspace-infrastruct
 | health\_check\_unhealthy\_threshold | Consecutive failed checks before marking instance unhealthy. | `number` | `3` | no |
 | idle\_timeout | The time (in seconds) that a connection to the load balancer can remain idle, which means no data is sent over the connection. After the specified time, the load balancer closes the connection. Value from 1 - 4000 | `number` | `60` | no |
 | instances | A list of EC2 instance IDs for the load balancer. Use when not assigned to auto scale group. i.e. ['i-0806906515f952316', 'i-0806906515f952316', 'i-0806906515f952316'] | `list(string)` | `[]` | no |
-| instances\_count | Total number of individual instances to attach to this CLB. Must match actual count of the `instances` parameter. | `string` | `""` | no |
+| instances\_count | Total number of individual instances to attach to this CLB. Must match actual count of the `instances` parameter. | `number` | `0` | no |
 | internal\_loadbalancer | If true, CLB will be an internal CLB. | `bool` | `false` | no |
 | internal\_record\_name | Record Name for the new Resource Record in the Internal Hosted Zone | `string` | `""` | no |
 | internal\_zone\_id | The Route53 Internal Hosted Zone ID | `string` | `""` | no |

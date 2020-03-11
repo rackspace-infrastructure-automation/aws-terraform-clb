@@ -108,8 +108,8 @@ variable "instances" {
 
 variable "instances_count" {
   description = "Total number of individual instances to attach to this CLB. Must match actual count of the `instances` parameter."
-  type        = string
-  default     = ""
+  type        = number
+  default     = 0
 }
 
 variable "internal_loadbalancer" {
