@@ -54,6 +54,8 @@ data "aws_elb_service_account" "main" {
 }
 
 data "aws_iam_policy_document" "clb_bucket_policy" {
+  count = var.create_logging_bucket ? 1 : 0
+
   version = "2012-10-17"
   statement {
     actions   = ["s3:PutObject"]
@@ -208,7 +210,7 @@ resource "aws_s3_bucket_policy" "log_bucket_policy" {
 
   bucket = aws_s3_bucket.log_bucket[0].id
 
-  policy = data.aws_iam_policy_document.clb_bucket_policy.json
+  policy = data.aws_iam_policy_document.clb_bucket_policy[0].json
 }
 
 # enable cloudwatch/RS ticket creation
