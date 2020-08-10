@@ -53,6 +53,21 @@ data "aws_caller_identity" "current_identity" {
 data "aws_elb_service_account" "main" {
 }
 
+data "aws_iam_policy_document" "clb_bucket_policy" {
+  count = var.create_logging_bucket ? 1 : 0
+
+  version = "2012-10-17"
+  statement {
+    actions   = ["s3:PutObject"]
+    effect    = "Allow"
+    resources = ["${aws_s3_bucket.log_bucket[0].arn}/*"]
+    principals {
+      type        = "AWS"
+      identifiers = [data.aws_elb_service_account.main.arn]
+    }
+  }
+}
+
 locals {
   acl_list = ["authenticated-read", "aws-exec-read", "bucket-owner-read", "bucket-owner-full-control", "log-delivery-write", "private", "public-read", "public-read-write"]
   env_list = ["Development", "Integration", "PreProduction", "Production", "QA", "Staging", "Test"]
@@ -195,27 +210,7 @@ resource "aws_s3_bucket_policy" "log_bucket_policy" {
 
   bucket = aws_s3_bucket.log_bucket[0].id
 
-  policy = <<POLICY
-{
-  "Id": "Policy1529427095432",
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Action": [
-        "s3:PutObject"
-      ],
-      "Effect": "Allow",
-      "Resource": "${aws_s3_bucket.log_bucket[0].arn}/*",
-      "Principal": {
-        "AWS": [
-          "${data.aws_elb_service_account.main.arn}"
-        ]
-      }
-    }
-  ]
-}
-POLICY
-
+  policy = data.aws_iam_policy_document.clb_bucket_policy[0].json
 }
 
 # enable cloudwatch/RS ticket creation
