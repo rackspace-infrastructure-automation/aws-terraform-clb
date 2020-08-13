@@ -7,15 +7,32 @@ provider "aws" {
   version = "~> 2.7"
 }
 
+module "vpc" {
+  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-vpc_basenetwork//?ref=v0.12.2"
+
+  name = "Test1VPC"
+}
+
+module "ec2_ar" {
+  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-ec2_autorecovery?ref=v0.12.4"
+
+  ec2_os          = "ubuntu16"
+  instance_count  = 2
+  instance_type   = "t2.micro"
+  name            = "test_ubuntu"
+  security_groups = [module.vpc.default_sg]
+  subnets         = module.vpc.private_subnets
+}
+
 module "clb" {
   source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-clb//?ref=v0.12.0"
 
   # Required
-  instances       = ["i-01", "i-02"]
+  instances       = module.ec2_ar.ar_instance_id_list
   instances_count = 2
-  name            = "<name>"
-  security_groups = ["sg-01", "sg-02"]
-  subnets         = ["subnet-01", "subnet-02"]
+  name            = "MyTestCLB"
+  security_groups = [module.vpc.default_sg]
+  subnets         = module.vpc.public_subnets
 
   # Optional
   tags = {
