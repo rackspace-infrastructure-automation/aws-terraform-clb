@@ -157,7 +157,7 @@ variable "listeners" {
 variable "logging_bucket_access_control" {
   description = "Define ACL for Bucket from one of the [canned ACL](https://docs.aws.amazon.com/AmazonS3/latest/dev/acl-overview.html#canned-acl): private, public-read, public-read-write, aws-exec-read, authenticated-read, bucket-owner-read, bucket-owner-full-control, log-delivery-write"
   type        = string
-  default     = "bucket-owner-full-control"
+  default     = "private"
 }
 
 variable "logging_bucket_encryption" {
