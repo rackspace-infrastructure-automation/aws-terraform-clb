@@ -54,7 +54,7 @@ Using [aws-terraform-cloudwatch\_alarm](https://github.com/rackspace-infrastruct
 | create\_internal\_record | Create Route53 Internal Record. i.e. true \| false | `bool` | `false` | no |
 | create\_logging\_bucket | Create a new S3 logging bucket. i.e. true \| false | `bool` | `true` | no |
 | cross\_zone | Whether cross-zone load balancing is enabled for the load balancer. i.e. true \| false | `bool` | `true` | no |
-| environment | Application environment for which this network is being created from one of the following: 'Development', 'Integration', 'PreProduction', 'Production', 'QA', 'Staging', 'Test' | `string` | `"Development"` | no |
+| environment | Application environment for which this network is being created from | `string` | `"Development"` | no |
 | health\_check\_interval | Seconds between health checks. | `number` | `30` | no |
 | health\_check\_target | Protocol & port check on instance. Valid pattern is <PROTOCOL>:<PORT><PATH>, where PROTOCOL values areTCP:5000 \| SSL:5000 \|\| HTTP(S) = HTTP:80/path/to/my/file. | `string` | `"HTTP:80/"` | no |
 | health\_check\_threshold | Consecutive successful checks before marking instance healthy. | `number` | `3` | no |
