@@ -70,10 +70,8 @@ data "aws_iam_policy_document" "clb_bucket_policy" {
 
 locals {
   acl_list = ["authenticated-read", "aws-exec-read", "log-delivery-write", "private", "public-read", "public-read-write"]
-  env_list = ["Development", "Integration", "PreProduction", "Production", "QA", "Staging", "Test"]
 
-  bucket_acl  = contains(local.acl_list, var.logging_bucket_access_control) ? var.logging_bucket_access_control : "bucket-owner-full-control"
-  environment = contains(local.env_list, var.environment) ? var.environment : "Development"
+  bucket_acl = contains(local.acl_list, var.logging_bucket_access_control) ? var.logging_bucket_access_control : "bucket-owner-full-control"
 
   default_tags = {
     Environment     = var.environment

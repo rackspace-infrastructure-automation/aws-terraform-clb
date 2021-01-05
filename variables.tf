@@ -59,7 +59,7 @@ variable "cross_zone" {
 }
 
 variable "environment" {
-  description = "Application environment for which this network is being created from one of the following: 'Development', 'Integration', 'PreProduction', 'Production', 'QA', 'Staging', 'Test'"
+  description = "Application environment for which this network is being created from"
   type        = string
   default     = "Development"
 }
