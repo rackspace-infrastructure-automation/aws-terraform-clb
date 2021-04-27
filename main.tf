@@ -213,7 +213,7 @@ resource "aws_s3_bucket_policy" "log_bucket_policy" {
 
 # enable cloudwatch/RS ticket creation
 module "unhealthy_host_count_alarm" {
-  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-cloudwatch_alarm//?ref=v0.12.4"
+  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-cloudwatch_alarm//?ref=v0.12.6"
 
   alarm_description        = "Unhealthy Host count is greater than or equal to threshold, creating ticket."
   comparison_operator      = "GreaterThanOrEqualToThreshold"

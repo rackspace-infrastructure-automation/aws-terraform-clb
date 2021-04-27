@@ -34,16 +34,46 @@ Full working references are available at [examples](examples)
 Using [aws-terraform-cloudwatch\_alarm](https://github.com/rackspace-infrastructure-automation/aws-terraform-cloudwatch_alarm) to create the following CloudWatch Alarms:
  - unhealthy\_host\_count\_alarm
 
+## Requirements
+
+| Name | Version |
+|------|---------|
+| terraform | >= 0.12 |
+| aws | >= 2.7.0 |
+
 ## Providers
 
 | Name | Version |
 |------|---------|
 | aws | >= 2.7.0 |
 
+## Modules
+
+| Name | Source | Version |
+|------|--------|---------|
+| unhealthy_host_count_alarm | git@github.com:rackspace-infrastructure-automation/aws-terraform-cloudwatch_alarm//?ref=v0.12.6 |  |
+
+## Resources
+
+| Name |
+|------|
+| [aws_app_cookie_stickiness_policy](https://registry.terraform.io/providers/hashicorp/aws/2.7.0/docs/resources/app_cookie_stickiness_policy) |
+| [aws_autoscaling_attachment](https://registry.terraform.io/providers/hashicorp/aws/2.7.0/docs/resources/autoscaling_attachment) |
+| [aws_caller_identity](https://registry.terraform.io/providers/hashicorp/aws/2.7.0/docs/data-sources/caller_identity) |
+| [aws_elb](https://registry.terraform.io/providers/hashicorp/aws/2.7.0/docs/resources/elb) |
+| [aws_elb_attachment](https://registry.terraform.io/providers/hashicorp/aws/2.7.0/docs/resources/elb_attachment) |
+| [aws_elb_service_account](https://registry.terraform.io/providers/hashicorp/aws/2.7.0/docs/data-sources/elb_service_account) |
+| [aws_iam_policy_document](https://registry.terraform.io/providers/hashicorp/aws/2.7.0/docs/data-sources/iam_policy_document) |
+| [aws_lb_cookie_stickiness_policy](https://registry.terraform.io/providers/hashicorp/aws/2.7.0/docs/resources/lb_cookie_stickiness_policy) |
+| [aws_region](https://registry.terraform.io/providers/hashicorp/aws/2.7.0/docs/data-sources/region) |
+| [aws_route53_record](https://registry.terraform.io/providers/hashicorp/aws/2.7.0/docs/resources/route53_record) |
+| [aws_s3_bucket](https://registry.terraform.io/providers/hashicorp/aws/2.7.0/docs/resources/s3_bucket) |
+| [aws_s3_bucket_policy](https://registry.terraform.io/providers/hashicorp/aws/2.7.0/docs/resources/s3_bucket_policy) |
+
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:-----:|
+|------|-------------|------|---------|:--------:|
 | app\_cookie\_name | The application cookie whose lifetime the ELB's cookie should follow. Only used if stickiness is set to application. | `string` | `""` | no |
 | app\_cookie\_stickiness\_policy\_name | Name for App Cookie Stickiness policy. Only alphanumeric characters and hyphens allowed. Only used if stickiness is set to application. | `string` | `""` | no |
 | app\_cookie\_stickiness\_port | The load balancer port to which the policy should be applied. This must be an active listener on the load balancer. Only used if stickiness is set to application. | `string` | `""` | no |
@@ -98,4 +128,3 @@ Using [aws-terraform-cloudwatch\_alarm](https://github.com/rackspace-infrastruct
 | clb\_source\_security\_group\_id | The ID of the security group that you can use as part of your inbound rules for your load balancer's back-end application instances. Only available on ELBs launched in a VPC. |
 | clb\_zone\_id | The canonical hosted zone ID of the ELB (to be used in a Route 53 Alias record) |
 | name | The name of the ELB. |
-
