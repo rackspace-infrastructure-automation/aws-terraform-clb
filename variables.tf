@@ -222,8 +222,8 @@ variable "logging_bucket_force_destroy" {
 
 variable "lifecycle_rules" {
   description = "a list of lifecycle rules related to s3 bucket which need to be passed as variables"
-  type = "list"
-  default = []
+  type        = "list"
+  default     = []
 }
 
 variable "internal_loadbalancer" {

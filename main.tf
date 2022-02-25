@@ -144,7 +144,8 @@ resource "aws_s3_bucket" "log_bucket" {
     }
   }
 
-lifecycle_rule = ["${var.lifecycle_rules}"]
+  lifecycle_rule = ["${var.lifecycle_rules}"]
+}
 
 # s3 policy needs to be separate since you can't reference the bucket for the reference.
 resource "aws_s3_bucket_policy" "log_bucket_policy" {
