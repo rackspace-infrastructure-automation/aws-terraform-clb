@@ -79,6 +79,7 @@ Using [aws-terraform-cloudwatch\_alarm](https://github.com/rackspace-infrastruct
 | logging\_bucket\_name | The number of days to retain load balancer logs. Parameter is ignored if not creating a new S3 bucket. | `string` | `""` | no |
 | logging\_bucket\_prefix | The prefix for the location in the S3 bucket. If you don't specify a prefix, the access logs are stored in the root of the bucket. | `string` | `"FrontendCLBLogs"` | no |
 | logging\_bucket\_retention | The number of days to retain load balancer logs. Parameter is ignored if not creating a new S3 bucket. | `string` | `14` | no |
+| lifecycle_rules | a list of lifecycle rules related to s3 bucket which need to be passed as variables | `list` | `[]` | no |
 | notification\_topic | List of SNS Topic ARNs to use for customer notifications. | `list` | `[]` | no |
 | rackspace\_alarms\_enabled | Specifies whether alarms will create a Rackspace ticket.  Ignored if rackspace\_managed is set to false. | `string` | `false` | no |
 | rackspace\_managed | Boolean parameter controlling if instance will be fully managed by Rackspace support teams, created CloudWatch alarms that generate tickets, and utilize Rackspace managed SSM documents. | `string` | `true` | no |

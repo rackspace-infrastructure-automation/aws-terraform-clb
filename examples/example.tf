@@ -24,6 +24,20 @@ module "clb" {
   logging_bucket_name       = "<existing_bucket_name>"
   logging_bucket_encryption = "AES256"
 
+  lifecycle_rules = [{
+    abort_incomplete_multipart_upload_days = 0
+    enabled                                = true
+
+    expiration = [{
+      days = 14
+    }]
+  },
+    {
+      abort_incomplete_multipart_upload_days = 7
+      enabled                                = true
+    },
+  ]
+
   # Rackspace Managed
   rackspace_managed = true
 

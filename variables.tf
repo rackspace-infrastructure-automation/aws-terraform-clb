@@ -220,6 +220,12 @@ variable "logging_bucket_force_destroy" {
   default     = false
 }
 
+variable "lifecycle_rules" {
+  description = "a list of lifecycle rules related to s3 bucket which need to be passed as variables"
+  type = "list"
+  default = []
+}
+
 variable "internal_loadbalancer" {
   description = "If true, CLB will be an internal CLB."
   type        = "string"
