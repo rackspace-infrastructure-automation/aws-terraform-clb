@@ -247,3 +247,8 @@ variable "tags" {
   type        = "map"
   default     = {}
 }
+
+variable "lifecycle_rules" {
+  description = "lifecycle rules for s3 bucket"
+  type        = "list"
+}
