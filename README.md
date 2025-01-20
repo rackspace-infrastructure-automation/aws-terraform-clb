@@ -1,3 +1,7 @@
+> [!CAUTION]
+> This project is end of life. This repo will be deleted on June 2nd 2025.
+
+
 # aws-terraform-clb
 
 This module creates a Classic Load Balancer also called ELB. Not to be confused with NLB or ALB which are preferred.
